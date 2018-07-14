@@ -1,0 +1,27 @@
+{
+  "name": "react-native-listview-refresh",
+  "version": "0.0.1",
+  "description": "A list component that can be pulled up & down to refresh, based on FlatList",
+  "main": "RefreshListView.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native",
+    "react-native-refresh",
+    "react-native-listview-refresh",
+    "flatlist",
+    "listview",
+    "refresh"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youngjuning/react-native-listview-refresh.git"
+  },
+  "author": "Daniel Liu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/youngjuning/react-native-listview-refresh/issues"
+  },
+  "homepage": "https://github.com/youngjuning/react-native-listview-refresh#readme"
+}
