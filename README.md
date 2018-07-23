@@ -3,20 +3,6 @@
 一个基于FlatList的列表下拉、上拉刷新控件。代码一共100多行，尽量写得简单易懂，方便各位根据自己的需求随意修改。
 如果有bug或建议，欢迎提issue。
 
-## 截图
-
-### 下拉刷新
-
-<img src="https://github.com/huanxsd/react-native-refresh-list-view/blob/master/screen_shot/1.png" alt="1" title="1">
-
-### 上拉翻页
-
-<img src="https://github.com/huanxsd/react-native-refresh-list-view/blob/master/screen_shot/2.png" alt="2" title="2">
-
-### 已加载全部数据
-
-<img src="https://github.com/huanxsd/react-native-refresh-list-view/blob/master/screen_shot/3.png" alt="3" title="3">
-
 ## 安装
 
 ### NPM
@@ -96,7 +82,6 @@ Task orphaned for request <NSMutableURLRequest: [[SOME_HEX_CODE]]> { URL: [[IMG_
 
 具体错误见[官方issue](https://github.com/facebook/react-native/issues/12152)。
 解决方案：使用图片缓存库[react-native-cached-image](https://github.com/kfiroo/react-native-cached-image)
-
 
 ## 最后
 
