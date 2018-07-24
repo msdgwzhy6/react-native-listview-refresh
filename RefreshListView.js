@@ -92,6 +92,12 @@ class RefreshListView extends PureComponent<Props, State> {
     return (refreshState == RefreshState.Idle)
   }
 
+  _separator = () => {
+    return(
+      <View style={{height:1,backgroundColor:'#e0e0e0'}}/>
+    )
+  }
+
   render() {
     log('[RefreshListView]  render')
 
@@ -101,11 +107,13 @@ class RefreshListView extends PureComponent<Props, State> {
       FlatListView = (
         <FlatList
           ref={this.props.listRef}
+          ItemSeparatorComponent={this._separator}
+          ListEmptyComponent={this.props.ListEmptyComponent}
+          ListHeaderComponent={this.props.renderHeader}
+          ListFooterComponent={this.renderFooter}
           onEndReached={this.onEndReached}
           refreshing={this.props.refreshState == RefreshState.HeaderRefreshing}
-          ListFooterComponent={this.renderFooter}
           onEndReachedThreshold={0.1}
-
           renderItem={renderItem}
 
           {...rest}
@@ -115,12 +123,14 @@ class RefreshListView extends PureComponent<Props, State> {
       FlatListView = (
         <FlatList
           ref={this.props.listRef}
+          ItemSeparatorComponent={this._separator}
+          ListEmptyComponent={this.props.ListEmptyComponent}
+          ListHeaderComponent={this.props.renderHeader}
+          ListFooterComponent={this.renderFooter}
           onEndReached={this.onEndReached}
           onRefresh={this.onHeaderRefresh}
           refreshing={this.props.refreshState == RefreshState.HeaderRefreshing}
-          ListFooterComponent={this.renderFooter}
           onEndReachedThreshold={0.1}
-
           renderItem={renderItem}
 
           {...rest}
