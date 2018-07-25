@@ -91,15 +91,3 @@ this.setState({refreshState: RefreshState.EmptyData})
 | footerFailureComponent | ?any | 自定义底部失败控件 | null |
 | footerNoMoreDataComponent | ?any | 自定义底部已加载全部数据控件 | null |
 | footerEmptyDataComponent | ?any | 自定义空数据控件 | null |
-
-## 常见问题
-列表滑动过程中，可能会出现警告
-Task orphaned for request <NSMutableURLRequest: [[SOME_HEX_CODE]]> { URL: [[IMG_URL]] }
-
-具体错误见[官方issue](https://github.com/facebook/react-native/issues/12152)。
-解决方案：使用图片缓存库[react-native-cached-image](https://github.com/kfiroo/react-native-cached-image)
-
-
-## 最后
-
-如果喜欢，请顺手我一个star，非常感谢~  ：）
