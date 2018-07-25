@@ -22,6 +22,7 @@ class RefreshListView extends PureComponent {
     footerContainerStyle: ViewPropTypes.style,
     footerTextStyle: ViewPropTypes.style,
 
+    disabledSeparator: PropTypes.bool,
     disabledHeaderRefresh: PropTypes.bool,
     footerRefreshingText: PropTypes.string,
     footerFailureText: PropTypes.string,
@@ -159,7 +160,7 @@ class RefreshListView extends PureComponent {
       <FlatList
         ref={this.props.listRef}
         {...rest}
-        ItemSeparatorComponent={this.renderSeparator}
+        ItemSeparatorComponent={this.props.disabledSeparator?false:this.renderSeparator}
         ListEmptyComponent={this.props.ListEmptyComponent}
         ListHeaderComponent={this.props.renderHeader}
         ListFooterComponent={this.renderFooter}
