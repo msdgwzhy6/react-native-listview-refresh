@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, ViewPropTypes} from 'react-native'
+import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, ViewPropTypes, RefreshControl} from 'react-native'
 
 export const RefreshState = {
   Idle: 0,
