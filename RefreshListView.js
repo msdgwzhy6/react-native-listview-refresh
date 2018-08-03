@@ -45,33 +45,26 @@ class RefreshListView extends PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    log('[RefreshListView]  RefreshListView componentWillReceiveProps ' + nextProps.refreshState)
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    log('[RefreshListView]  RefreshListView componentDidUpdate ' + prevProps.refreshState)
   }
 
   onHeaderRefresh = () => {
-    log('[RefreshListView]  onHeaderRefresh')
 
     if (this.shouldStartHeaderRefreshing()) {
-      log('[RefreshListView]  onHeaderRefresh')
       this.props.onHeaderRefresh(RefreshState.HeaderRefreshing)
     }
   }
 
   onEndReached = (info: {distanceFromEnd: number}) => {
-    log('[RefreshListView]  onEndReached   ' + info.distanceFromEnd)
 
     if (this.shouldStartFooterRefreshing()) {
-      log('[RefreshListView]  onFooterRefresh')
       this.props.onFooterRefresh && this.props.onFooterRefresh(RefreshState.FooterRefreshing)
     }
   }
 
   shouldStartHeaderRefreshing = () => {
-    log('[RefreshListView]  shouldStartHeaderRefreshing')
 
     if (this.props.refreshState == RefreshState.HeaderRefreshing ||
       this.props.refreshState == RefreshState.FooterRefreshing) {
@@ -82,7 +75,6 @@ class RefreshListView extends PureComponent<Props, State> {
   }
 
   shouldStartFooterRefreshing = () => {
-    log('[RefreshListView]  shouldStartFooterRefreshing')
 
     let {refreshState, data} = this.props
     if (data.length == 0) {
@@ -93,7 +85,6 @@ class RefreshListView extends PureComponent<Props, State> {
   }
 
   render() {
-    log('[RefreshListView]  render  refreshState:' + this.props.refreshState)
 
     let {renderItem, ...rest} = this.props
 
@@ -121,7 +112,7 @@ class RefreshListView extends PureComponent<Props, State> {
   renderSeparator = () => (
     <View style={{height: 1, backgroundColor: '#e0e0e0'}} />
   )
-  
+
   renderFooter = () => {
     let footer = null
 
