@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react'
-import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, ViewPropTypes} from 'react-native'
+import PropTypes from 'prop-types'
+import {View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, ViewPropTypes,RefreshControl} from 'react-native'
 
-export const RefreshState = {
+const RefreshState = {
   Idle: 0,
   HeaderRefreshing: 1,
   FooterRefreshing: 2,
@@ -10,118 +11,74 @@ export const RefreshState = {
   EmptyData: 5,
 }
 
-type Props = {
-  refreshState: number,
-  onHeaderRefresh: Function,
-  onFooterRefresh?: Function,
-  data: Array<any>,
+class RefreshListView extends PureComponent {
+  static propTypes = {
+    data: PropTypes.array.isRequired,
+    renderItem: PropTypes.func.isRequired,
+    refreshState: PropTypes.number.isRequired,
 
-  listRef?: any,
+    listRef: PropTypes.node,
+    onHeaderRefresh: PropTypes.func,
+    footerContainerStyle: ViewPropTypes.style,
+    footerTextStyle: ViewPropTypes.style,
 
-  footerRefreshingText?: string,
-  footerFailureText?: string,
-  footerNoMoreDataText?: string,
-  footerEmptyDataText?: string,
+    disabledSeparator: PropTypes.bool,
+    disabledHeaderRefresh: PropTypes.bool,
+    footerRefreshingText: PropTypes.string,
+    footerFailureText: PropTypes.string,
+    footerNoMoreDataText: PropTypes.string,
+    footerEmptyDataText: PropTypes.string,
 
-  footerRefreshingComponent?: any,
-  footerFailureComponent?: any,
-  footerNoMoreDataComponent?: any,
-  footerEmptyDataComponent?: any,
-
-  renderItem: Function,
-}
-
-type State = {
-
-}
-
-class RefreshListView extends PureComponent<Props, State> {
+    ListEmptyComponent: PropTypes.node,
+    footerRefreshingComponent: PropTypes.node,
+    footerFailureComponent: PropTypes.node,
+    footerNoMoreDataComponent: PropTypes.node,
+    footerEmptyDataComponent: PropTypes.node,
+  }
 
   static defaultProps = {
+    disabledHeaderRefresh: false,
     footerRefreshingText: '数据加载中…',
     footerFailureText: '点击重新加载',
     footerNoMoreDataText: '已加载全部数据',
     footerEmptyDataText: '暂时没有相关数据',
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    log('[RefreshListView]  RefreshListView componentWillReceiveProps ' + nextProps.refreshState)
-  }
+  componentWillReceiveProps(nextProps) {}
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    log('[RefreshListView]  RefreshListView componentDidUpdate ' + prevProps.refreshState)
-  }
+  componentDidUpdate(prevProps, prevState) {}
 
   onHeaderRefresh = () => {
-    log('[RefreshListView]  onHeaderRefresh')
-
     if (this.shouldStartHeaderRefreshing()) {
-      log('[RefreshListView]  onHeaderRefresh')
       this.props.onHeaderRefresh(RefreshState.HeaderRefreshing)
     }
   }
 
-  onEndReached = (info: {distanceFromEnd: number}) => {
-    log('[RefreshListView]  onEndReached   ' + info.distanceFromEnd)
-
+  onEndReached = () => {
     if (this.shouldStartFooterRefreshing()) {
-      log('[RefreshListView]  onFooterRefresh')
       this.props.onFooterRefresh && this.props.onFooterRefresh(RefreshState.FooterRefreshing)
     }
   }
 
   shouldStartHeaderRefreshing = () => {
-    log('[RefreshListView]  shouldStartHeaderRefreshing')
-
-    if (this.props.refreshState == RefreshState.HeaderRefreshing ||
-      this.props.refreshState == RefreshState.FooterRefreshing) {
+    if (this.props.refreshState == RefreshState.HeaderRefreshing || this.props.refreshState == RefreshState.FooterRefreshing) {
       return false
     }
-
     return true
   }
 
   shouldStartFooterRefreshing = () => {
-    log('[RefreshListView]  shouldStartFooterRefreshing')
-
-    let {refreshState, data} = this.props
+    const {refreshState, data} = this.props
     if (data.length == 0) {
       return false
     }
-
     return (refreshState == RefreshState.Idle)
-  }
-
-  render() {
-    log('[RefreshListView]  render  refreshState:' + this.props.refreshState)
-
-    let {renderItem, ...rest} = this.props
-
-    return (
-      <FlatList
-        ref={this.props.listRef}
-        onEndReached={this.onEndReached}
-        refreshControl={
-          this.props.onHeaderRefresh?<RefreshControl
-          colors={['#00ff00',"#9Bd35A", "#689F38",]}
-          refreshing={this.props.refreshState == RefreshState.HeaderRefreshing}
-          onRefresh={this.onHeaderRefresh}
-        />:false}
-        refreshing={this.props.refreshState == RefreshState.HeaderRefreshing}
-        ListFooterComponent={this.renderFooter}
-        onEndReachedThreshold={0.1}
-        ItemSeparatorComponent={this.props.disabledSeparator?false:this.renderSeparator}
-        renderItem={renderItem}
-
-        {...rest}
-      />
-    )
   }
 
   renderSeparator = () => (
     <View style={{height: 1, backgroundColor: '#e0e0e0'}} />
   )
-  
+
   renderFooter = () => {
     let footer = null
 
@@ -138,9 +95,10 @@ class RefreshListView extends PureComponent<Props, State> {
     } = this.props
 
     switch (this.props.refreshState) {
-      case RefreshState.Idle:
+      case RefreshState.Idle: {
         footer = (<View style={styles.footerContainer} />)
         break
+      }
       case RefreshState.Failure: {
         footer = (
           <TouchableOpacity onPress={() => {
@@ -193,8 +151,30 @@ class RefreshListView extends PureComponent<Props, State> {
         break
       }
     }
-
     return footer
+  }
+
+  render() {
+    const {renderItem, ...rest} = this.props
+    return (
+      <FlatList
+        ref={this.props.listRef}
+        {...rest}
+        ItemSeparatorComponent={this.props.disabledSeparator?false:this.renderSeparator}
+        ListEmptyComponent={this.props.ListEmptyComponent}
+        ListHeaderComponent={this.props.renderHeader}
+        ListFooterComponent={this.renderFooter}
+        onEndReached={this.onEndReached}
+        refreshControl={
+          this.props.disabledHeaderRefresh?false:<RefreshControl
+          colors={['#00ff00',"#9Bd35A", "#689F38",]}
+          refreshing={this.props.refreshState == RefreshState.HeaderRefreshing}
+          onRefresh={this.onHeaderRefresh}
+        />}
+        onEndReachedThreshold={0.1}
+        renderItem={renderItem}
+      />
+    )
   }
 }
 
@@ -209,8 +189,12 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
-    color: '#555555'
-  }
+    color: '#555555',
+  },
 })
+
+export {
+  RefreshState,
+}
 
 export default RefreshListView
